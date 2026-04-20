@@ -1,0 +1,175 @@
+<div class="menu-page">
+  <div class="screen-wrapper">
+    <span class="titulo-topo">TELA_MENU</span>
+
+    <button
+      class="btn-menu-flutuante"
+      *ngIf="!menuAberto"
+      (click)="abrirMenu()"
+      aria-label="Abrir menu"
+      title="Abrir menu"
+    >
+      ☰
+    </button>
+
+    <div class="menu-layout">
+      <aside class="sidebar" *ngIf="menuAberto">
+        <button
+          class="btn-fechar"
+          (click)="fecharMenu()"
+          aria-label="Fechar menu"
+          title="Fechar menu"
+        >
+          ✕
+        </button>
+
+        <div class="sidebar-logo">
+          <img src="/assets/logo-ecototally.png" alt="Logo EcoTotally" />
+        </div>
+
+        <nav class="sidebar-nav">
+          <button
+            class="nav-btn ativo"
+            (click)="irParaMenu()"
+            aria-label="Ir para menu"
+            title="Menu"
+          >
+            🏠
+          </button>
+
+          <button
+            class="nav-btn"
+            (click)="irParaPerfil()"
+            aria-label="Ir para perfil"
+            title="Perfil"
+          >
+            👤
+          </button>
+
+          <button
+            class="nav-btn"
+            (click)="irParaConsumo()"
+            aria-label="Ir para consumo"
+            title="Consumo"
+          >
+            📄
+          </button>
+
+          ''
+          <button
+            class="nav-btn"
+            (click)="irParaGraficos()"
+            aria-label="Ir para gráficos"
+            title="Gráficos"
+          >
+            📊
+          </button>
+
+          <button class="nav-btn" aria-label="Energia" title="Energia">⚡</button>
+
+          <button class="nav-btn" aria-label="Configurações" title="Configurações">⚙️</button>
+        </nav>
+      </aside>
+
+      <main class="main-content" [class.expandido]="!menuAberto">
+        <div class="logo-area">
+          <img src="/assets/logo-ecototally.png" alt="Logo EcoTotally" class="logo" />
+        </div>
+
+        <section class="usuario-card">
+          <div class="usuario-header">
+            <h1>{{ usuarioNome }}</h1>
+
+            <button
+              class="btn-olho"
+              (click)="toggleResumo()"
+              aria-label="Mostrar ou esconder resumo"
+              title="Mostrar ou esconder resumo"
+            >
+              {{ mostrarResumo ? '👁' : '🙈' }}
+            </button>
+          </div>
+
+          <div class="resumo-box" *ngIf="mostrarResumo">
+            <div class="mini-card">
+              <span class="mini-label">REGISTRO</span>
+              <strong>{{ registro }}</strong>
+            </div>
+
+            <div class="mini-card">
+              <span class="mini-label">TOTAL GASTO</span>
+              <strong>{{ totalGasto | currency: 'BRL' : 'symbol' : '1.2-2' }}</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="bloco-card">
+          <h2>PONTOS: {{ pontos }}</h2>
+
+          <div class="bloco-interno">
+            <p>RANK.REGIONAL</p>
+            <strong>{{ rankRegional }}</strong>
+          </div>
+        </section>
+
+        <section class="bloco-card">
+          <div class="titulo-com-acao">
+            <h2>CONFIGURAÇÕES</h2>
+          </div>
+
+          <div class="bloco-interno lista-config">
+            <div class="config-item" *ngFor="let config of configuracoes">
+              {{ config }}
+            </div>
+          </div>
+        </section>
+
+        <section class="bloco-card">
+          <div class="titulo-com-acao">
+            <h2>METAS</h2>
+
+            <button
+              class="btn-add-meta"
+              (click)="abrirInputMeta()"
+              aria-label="Adicionar meta"
+              title="Adicionar meta"
+            >
+              +
+            </button>
+          </div>
+
+          <div class="meta-form" *ngIf="mostrarInputMeta">
+            <input type="text" [(ngModel)]="novaMeta" placeholder="Digite uma nova meta" />
+
+            <button class="btn-salvar-meta" (click)="adicionarMeta()">Salvar</button>
+          </div>
+
+          <div class="bloco-interno lista-metas">
+            <div class="meta-item" *ngFor="let meta of metas">
+              <span>{{ meta.titulo }}</span>
+
+              <button
+                class="btn-remover-meta"
+                (click)="removerMeta(meta.id)"
+                aria-label="Remover meta"
+                title="Remover meta"
+              >
+                ✕
+              </button>
+            </div>
+
+            <p class="texto-vazio" *ngIf="metas.length === 0">Nenhuma meta cadastrada ainda.</p>
+          </div>
+        </section>
+
+        <div class="feedback erro" *ngIf="erro">
+          {{ erro }}
+        </div>
+
+        <div class="rodape-acoes">
+          <button class="btn-voltar-login" (click)="voltarParaLogin()">Sair</button>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>

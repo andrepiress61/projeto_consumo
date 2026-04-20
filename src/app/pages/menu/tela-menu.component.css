@@ -1,0 +1,361 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.menu-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background:
+    radial-gradient(circle at top, rgba(17, 110, 84, 0.18), transparent 30%),
+    radial-gradient(circle at bottom, rgba(14, 91, 68, 0.18), transparent 35%),
+    linear-gradient(180deg, #0a1412 0%, #06221b 100%);
+}
+
+.screen-wrapper {
+  width: 360px;
+  min-height: 740px;
+  padding: 18px 14px 22px;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(0, 255, 170, 0.1), transparent 28%),
+    radial-gradient(circle at 80% 80%, rgba(0, 180, 120, 0.1), transparent 25%),
+    linear-gradient(180deg, #021816 0%, #06342e 50%, #03211d 100%);
+}
+
+.screen-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 4px 4px;
+  opacity: 0.22;
+  pointer-events: none;
+}
+
+.titulo-topo {
+  position: relative;
+  z-index: 2;
+  color: #8f8f8f;
+  font-size: 12px;
+  display: block;
+  margin-bottom: 12px;
+  letter-spacing: 0.05em;
+}
+
+.btn-menu-flutuante {
+  position: absolute;
+  top: 46px;
+  left: 16px;
+  z-index: 3;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(8, 148, 127, 0.95);
+  color: #04110d;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.28);
+}
+
+.menu-layout {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 10px;
+}
+
+.sidebar {
+  width: 58px;
+  min-height: 680px;
+  padding: 14px 10px;
+  border-radius: 20px;
+  background: rgba(8, 148, 127, 0.92);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.btn-fechar {
+  border: none;
+  background: transparent;
+  color: #04110d;
+  font-size: 26px;
+  cursor: pointer;
+  margin-bottom: 36px;
+}
+
+.sidebar-logo {
+  margin-bottom: 36px;
+}
+
+.sidebar-logo img {
+  width: 34px;
+  height: auto;
+  object-fit: contain;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.nav-btn {
+  border: none;
+  background: transparent;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.main-content {
+  flex: 1;
+  transition: all 0.25s ease;
+}
+
+.main-content.expandido {
+  width: 100%;
+  margin-left: 0;
+}
+
+.logo-area {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0 14px;
+}
+
+.logo {
+  width: 125px;
+  max-width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(80, 255, 180, 0.08));
+}
+
+.usuario-card,
+.bloco-card {
+  width: 100%;
+  padding: 18px 14px 14px;
+  border-radius: 22px;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 88, 73, 0.72) 0%,
+    rgba(7, 67, 57, 0.82) 100%
+  );
+  border: 1px solid rgba(120, 255, 190, 0.1);
+  box-shadow:
+    0 18px 34px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  margin-bottom: 16px;
+}
+
+.usuario-header,
+.titulo-com-acao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.usuario-header h1,
+.bloco-card h2 {
+  color: #f2f2e8;
+  font-size: 24px;
+  line-height: 1.1;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.btn-olho,
+.btn-add-meta {
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 17, 14, 0.88);
+  color: #8fe7bd;
+  cursor: pointer;
+  font-size: 18px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.resumo-box {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.mini-card {
+  flex: 1;
+  min-height: 82px;
+  border-radius: 14px;
+  background: rgba(0, 17, 14, 0.88);
+  color: #f2f2e8;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.mini-label {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.mini-card strong {
+  font-size: 18px;
+  font-weight: 500;
+  align-self: flex-end;
+}
+
+.bloco-interno {
+  margin-top: 14px;
+  border-radius: 14px;
+  background: rgba(0, 17, 14, 0.88);
+  min-height: 110px;
+  padding: 14px;
+  color: #f2f2e8;
+}
+
+.bloco-interno p {
+  margin: 0 0 18px;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.bloco-interno strong {
+  display: block;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.lista-config {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.config-item {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 13px;
+  color: #dff8eb;
+}
+
+.meta-form {
+  margin-top: 14px;
+  display: flex;
+  gap: 8px;
+}
+
+.meta-form input {
+  flex: 1;
+  height: 40px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(0, 17, 14, 0.88);
+  color: #dff8eb;
+  padding: 0 12px;
+  font-size: 14px;
+  outline: none;
+}
+
+.meta-form input::placeholder {
+  color: rgba(220, 240, 230, 0.42);
+}
+
+.btn-salvar-meta {
+  border: none;
+  border-radius: 12px;
+  background: #39b85e;
+  color: #11261b;
+  font-weight: 700;
+  padding: 0 14px;
+  cursor: pointer;
+}
+
+.lista-metas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #dff8eb;
+}
+
+.btn-remover-meta {
+  border: none;
+  background: transparent;
+  color: #ffb3b3;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.texto-vazio {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(220, 240, 230, 0.7);
+}
+
+.rodape-acoes {
+  margin-top: 12px;
+}
+
+.btn-voltar-login {
+  width: 100%;
+  height: 42px;
+  border: none;
+  border-radius: 14px;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-family: Georgia, 'Times New Roman', serif;
+  background: #2d8d43;
+  color: #13281d;
+  font-weight: 600;
+}
+
+.btn-voltar-login:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 360px) {
+  .screen-wrapper {
+    width: 100%;
+  }
+
+  .resumo-box {
+    flex-direction: column;
+  }
+}

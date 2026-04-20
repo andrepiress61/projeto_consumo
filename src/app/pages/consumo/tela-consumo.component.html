@@ -1,0 +1,138 @@
+<div class="consumo-page">
+  <div class="screen-wrapper">
+    <span class="titulo-topo">TELA_REGISTRO</span>
+
+    <button
+      class="btn-menu-flutuante"
+      *ngIf="!menuAberto"
+      (click)="abrirMenu()"
+      aria-label="Abrir menu"
+      title="Abrir menu"
+    >
+      ☰
+    </button>
+
+    <div class="consumo-layout">
+      <aside class="sidebar" *ngIf="menuAberto">
+        <button class="btn-fechar" (click)="fecharMenu()" aria-label="Fechar menu">
+          ✕
+        </button>
+
+        <div class="sidebar-logo">
+          <img src="/assets/logo-ecototally.png" alt="Logo EcoTotally" />
+        </div>
+
+        <nav class="sidebar-nav">
+          <button class="nav-btn" (click)="irParaMenu()">🏠</button>
+          <button class="nav-btn" (click)="irParaPerfil()">👤</button>
+          <button class="nav-btn" (click)="irParaGraficos()">📄</button>
+          <button class="nav-btn">📊</button>
+          <button class="nav-btn">⚡</button>
+          <button class="nav-btn">⚙️</button>
+        </nav>
+      </aside>
+
+      <main class="main-content" [class.expandido]="!menuAberto">
+        <section class="card-principal">
+          <h1>NOVO REGISTRO:</h1>
+
+          <div class="tipos-grid">
+            <button
+              *ngFor="let tipo of tipos"
+              class="tipo-btn"
+              [class.ativo]="tipoSelecionado === tipo.chave"
+              (click)="selecionarTipo(tipo.chave)"
+            >
+              <span class="tipo-emoji">{{ tipo.emoji }}</span>
+              <span class="tipo-texto">{{ tipo.label }}</span>
+            </button>
+          </div>
+
+          <label class="label-campo">VALOR:</label>
+          <input
+            class="input-campo"
+            type="text"
+            [(ngModel)]="valor"
+            placeholder="R$0,00"
+          />
+
+          <label class="label-campo">DATA:</label>
+          <div class="data-wrap">
+            <input
+              class="input-campo input-data"
+              type="date"
+              [(ngModel)]="dataSelecionada"
+              [max]="dataMaxima"
+            />
+            <span class="icone-calendario">📅</span>
+          </div>
+
+          <div class="acoes-form">
+            <button class="btn-salvar" (click)="salvarRegistro()" [disabled]="salvando">
+              {{ editandoId ? 'ATUALIZAR' : 'SALVAR' }}
+            </button>
+
+            <button
+              *ngIf="editandoId"
+              class="btn-cancelar"
+              (click)="cancelarEdicao()"
+              type="button"
+            >
+              CANCELAR
+            </button>
+          </div>
+
+          <div class="divisor"></div>
+
+          <button class="btn-historico" (click)="toggleHistorico()">
+            HISTÓRICO
+          </button>
+
+          <div class="historico-box" *ngIf="mostrarHistorico">
+            <div class="texto-status" *ngIf="carregando">Carregando histórico...</div>
+
+            <div
+              class="registro-item"
+              *ngFor="let item of registros"
+              [class.expandido]="item.expandido"
+            >
+              <div class="registro-topo">
+                <button class="btn-expandir" (click)="toggleExpandir(item)">
+                  {{ item.expandido ? '⌄' : '☰' }}
+                </button>
+
+                <div class="registro-resumo">
+                  <span class="registro-tipo">
+                    {{ tipoEmoji(item.tipo) }} {{ tipoLabel(item.tipo) }}
+                  </span>
+                  <span class="registro-valor">{{ formatarMoeda(item.gasto) }}</span>
+                </div>
+
+                <button class="btn-excluir" (click)="excluirRegistro(item.id)">🗑️</button>
+              </div>
+
+              <div class="registro-detalhes" *ngIf="item.expandido">
+                <p><strong>Gasto:</strong> {{ formatarMoeda(item.gasto) }}</p>
+                <p><strong>Data:</strong> {{ item.dataFormatada }}</p>
+                <p><strong>Descrição:</strong> {{ item.descricao || 'Sem descrição' }}</p>
+
+                <div class="detalhes-acoes">
+                  <button class="btn-editar-item" (click)="editarRegistro(item)">
+                    Editar
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="texto-status" *ngIf="!carregando && registros.length === 0">
+              Nenhum registro encontrado.
+            </div>
+          </div>
+
+          <div class="feedback sucesso" *ngIf="mensagem">{{ mensagem }}</div>
+          <div class="feedback erro" *ngIf="erro">{{ erro }}</div>
+        </section>
+      </main>
+    </div>
+  </div>
+</div>
