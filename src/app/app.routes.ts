@@ -3,7 +3,7 @@ import { TelaLoginComponent } from './pages/login/tela-login.component';
 import { CadastroUsuarioComponent } from './pages/usuario/cadastro-usuario.component';
 import { TelaMenuComponent } from './pages/menu/tela-menu.component';
 import { TelaPerfilComponent } from './pages/perfil/tela-perfil.component';
-import { TelaConsumoComponent } from './pages/consumo/tela-consumo.component';
+import { TelaSimulacaoComponent } from './pages/simulacao/tela-simulacao.component';
 import { TelaGraficosComponent } from './pages/graficos/tela-graficos.component';
 
 export const routes: Routes = [
@@ -12,6 +12,7 @@ export const routes: Routes = [
   { path: 'cadastro', component: CadastroUsuarioComponent },
   { path: 'menu', component: TelaMenuComponent },
   { path: 'perfil', component: TelaPerfilComponent },
-  { path: 'consumo', component: TelaConsumoComponent },
-  { path: 'graficos', component: TelaGraficosComponent }
+  { path: 'simulacao', component: TelaSimulacaoComponent },
+  { path: 'graficos', component: TelaGraficosComponent },
+  { path: '**', redirectTo: 'login' }
 ];

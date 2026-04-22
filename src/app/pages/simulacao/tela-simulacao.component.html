@@ -1,0 +1,154 @@
+<div class="menu-page">
+  <div class="screen-wrapper">
+    <span class="titulo-topo">TELA_SIMULACAO</span>
+
+    <button
+      class="btn-menu-flutuante"
+      *ngIf="!sidebarAberta"
+      type="button"
+      (click)="toggleSidebar()"
+    >
+      ☰
+    </button>
+
+    <div class="backdrop" *ngIf="sidebarAberta" (click)="fecharSidebar()"></div>
+
+    <div class="menu-layout">
+      <aside class="sidebar" [class.sidebar-aberta]="sidebarAberta">
+        <button class="btn-fechar" type="button" (click)="fecharSidebar()">✕</button>
+
+        <div class="sidebar-logo">
+          <div class="eco-box">ECO</div>
+          <span class="sidebar-user">{{ usuarioNome }}</span>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button class="nav-btn" (click)="irParaMenu()">🏠</button>
+          <button class="nav-btn" (click)="irParaPerfil()">👤</button>
+          <button class="nav-btn" (click)="irParaGraficos()">📄</button>
+          <button class="nav-btn" (click)="irParaGraficos()">📊</button>
+          <button class="nav-btn" (click)="irParaSimulacao()">⚡</button>
+          <button class="nav-btn">⚙️</button>
+        </nav>
+      </aside>
+
+      <main class="main-content" [class.expandido]="!sidebarAberta">
+        <section class="simulacao-card">
+          <h1>NOVA SIMULAÇÃO:</h1>
+
+          <div class="tipo-grid">
+            <button
+              type="button"
+              class="tipo-card"
+              [class.ativo]="tipoSelecionado === 'energia'"
+              (click)="selecionarTipo('energia')"
+            >
+              <span class="tipo-icone">⚡</span>
+              <span>ENERGIA</span>
+            </button>
+
+            <button
+              type="button"
+              class="tipo-card"
+              [class.ativo]="tipoSelecionado === 'agua'"
+              (click)="selecionarTipo('agua')"
+            >
+              <span class="tipo-icone">💧</span>
+              <span>ÁGUA</span>
+            </button>
+          </div>
+
+          <div class="formulario-simulacao">
+            <label for="nomeAtividade">Nome da atividade:</label>
+            <input
+              id="nomeAtividade"
+              type="text"
+              [(ngModel)]="nomeAtividade"
+              placeholder="Ex: Banho, ar-condicionado"
+            />
+
+            <label for="consumo">Consumo ({{ getUnidade() }}):</label>
+            <input
+              id="consumo"
+              type="number"
+              min="0"
+              step="0.01"
+              [(ngModel)]="consumo"
+              placeholder="0"
+            />
+
+            <label for="dataRegistro">Data do registro:</label>
+            <input
+              id="dataRegistro"
+              type="date"
+              [(ngModel)]="dataRegistro"
+              [max]="dataMaxima"
+            />
+
+            <label for="descricao">Descrição:</label>
+            <textarea
+              id="descricao"
+              rows="4"
+              [(ngModel)]="descricao"
+              placeholder="Insira uma descrição"
+            ></textarea>
+
+            <button
+              type="button"
+              class="btn-criar"
+              [disabled]="carregando"
+              (click)="criarSimulacao()"
+            >
+              {{ carregando ? 'Salvando...' : 'Criar simulação' }}
+            </button>
+
+            <p class="mensagem sucesso" *ngIf="mensagem">{{ mensagem }}</p>
+            <p class="mensagem erro" *ngIf="erro">{{ erro }}</p>
+          </div>
+        </section>
+
+        <section class="historico-card">
+          <div class="historico-header">
+            <h2>HISTÓRICO</h2>
+            <button type="button" class="btn-recarregar" (click)="carregarHistorico()">↻</button>
+          </div>
+
+          <div class="historico-conteudo" *ngIf="carregandoHistorico">
+            Carregando histórico...
+          </div>
+
+          <div class="historico-conteudo" *ngIf="!carregandoHistorico && simulacoes.length === 0">
+            Nenhuma simulação cadastrada ainda.
+          </div>
+
+          <div class="lista-historico" *ngIf="!carregandoHistorico && simulacoes.length > 0">
+            <div class="item-historico" *ngFor="let item of simulacoes">
+              <div class="item-topo">
+                <div class="item-esquerda">
+                  <span class="item-icone">{{ getIconeTipo(item.tipo) }}</span>
+                  <strong>{{ item.nome_atividade }}</strong>
+                </div>
+
+                <button type="button" class="btn-excluir" (click)="excluirSimulacao(item.id)">
+                  🗑
+                </button>
+              </div>
+
+              <div class="item-detalhes">
+                <p>{{ getTituloTipo(item.tipo) }}</p>
+                <p>Consumo: {{ item.consumo | number:'1.0-2' }} {{ getLabelConsumo(item) }}</p>
+                <p>Data: {{ formatarData(item.data_registro || item.created_at) }}</p>
+                <p *ngIf="item.descricao">Descrição: {{ item.descricao }}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="rodape-botoes">
+          <button type="button" class="btn-menu" routerLink="/menu">Voltar ao menu</button>
+          <button type="button" class="btn-logout" (click)="logout()">Logout</button>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>

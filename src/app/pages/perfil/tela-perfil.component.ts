@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../core/auth.service';
-import { UsuarioService, UsuarioMeResponse } from '../../service/usuarioservice';
+import { AuthService, UsuarioLocal } from '../../core/auth.service';
+import { UsuarioService, UsuarioMeResponse } from '../../services/usuarioservice';
 
 interface Dica {
   titulo: string;
@@ -81,8 +81,8 @@ export class TelaPerfilComponent implements OnInit {
     });
   }
 
-  aplicarUsuario(usuario: UsuarioMeResponse): void {
-    this.usuarioId = (usuario?.id as number | string | undefined) ?? null;
+  aplicarUsuario(usuario: UsuarioMeResponse | UsuarioLocal): void {
+    this.usuarioId = usuario?.id ?? null;
     this.nome = String(usuario?.nome || '');
     this.email = String(usuario?.email || '');
     this.cidade = String(usuario?.cidade || '');
@@ -311,10 +311,15 @@ export class TelaPerfilComponent implements OnInit {
   irParaConsumo(): void {
     this.router.navigate(['/consumo']);
   }
-  
+
   irParaGraficos(): void {
-  this.router.navigate(['/graficos']);
+    this.router.navigate(['/graficos']);
   }
+
+  irParaSimulacao(): void {
+    this.router.navigate(['/simulacao']);
+  }
+
   sair(): void {
     this.authService.logout();
     this.router.navigate(['/login']);

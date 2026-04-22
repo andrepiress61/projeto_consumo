@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../core/auth.service';
+import { UsuarioService } from '../../services/usuarioservice';
 
 @Component({
   selector: 'app-tela-login',
@@ -14,6 +15,8 @@ import { AuthService } from '../../core/auth.service';
 })
 export class TelaLoginComponent {
   private authService = inject(AuthService);
+  private usuarioService = inject(UsuarioService);
+  private router = inject(Router);
 
   email = '';
   senha = '';
@@ -21,12 +24,13 @@ export class TelaLoginComponent {
   carregando = false;
   erro = '';
 
-  constructor(private router: Router) {}
-
   entrar(): void {
     this.erro = '';
 
-    if (!this.email.trim() || !this.senha.trim()) {
+    const emailLimpo = this.email.trim();
+    const senhaLimpa = this.senha.trim();
+
+    if (!emailLimpo || !senhaLimpa) {
       this.erro = 'Preencha email e senha.';
       return;
     }
@@ -34,23 +38,34 @@ export class TelaLoginComponent {
     this.carregando = true;
 
     this.authService.login({
-      email: this.email.trim(),
-      senha: this.senha.trim()
+      email: emailLimpo,
+      senha: senhaLimpa
     }).subscribe({
-      next: (usuario) => {
-        console.log('Usuário logado:', usuario);
+      next: () => {
+        this.usuarioService.buscarUsuarioLogado().subscribe({
+          next: (usuario) => {
+            this.authService.atualizarUsuarioLocal({
+              id: usuario?.id,
+              nome: String(usuario?.nome || ''),
+              email: String(usuario?.email || ''),
+              cidade: String(usuario?.cidade || '')
+            });
 
-        this.carregando = false;
-        this.router.navigate(['/menu']);
+            this.carregando = false;
+            this.router.navigate(['/menu']);
+          },
+          error: (err) => {
+            console.error('Erro ao buscar usuário logado:', err);
+
+            this.carregando = false;
+            this.router.navigate(['/menu']);
+          }
+        });
       },
       error: (err) => {
         console.error('Erro no login:', err);
         this.carregando = false;
-        this.erro =
-          err?.error?.detail ||
-          err?.error?.message ||
-          JSON.stringify(err?.error) ||
-          'Não foi possível fazer login.';
+        this.erro = this.extrairMensagemErro(err);
       }
     });
   }
@@ -61,5 +76,37 @@ export class TelaLoginComponent {
 
   alternarSenha(): void {
     this.mostrarSenha = !this.mostrarSenha;
+  }
+
+  private extrairMensagemErro(err: any): string {
+    if (typeof err?.error?.detail === 'string') {
+      return err.error.detail;
+    }
+
+    if (Array.isArray(err?.error?.detail)) {
+      return err.error.detail.map((item: any) => item?.msg || 'Erro').join(', ');
+    }
+
+    if (typeof err?.error?.message === 'string') {
+      return err.error.message;
+    }
+
+    if (typeof err?.error === 'string') {
+      return err.error;
+    }
+
+    if (err?.status === 401) {
+      return 'Email ou senha inválidos.';
+    }
+
+    if (err?.status === 404) {
+      return 'Rota de login não encontrada.';
+    }
+
+    if (err?.status === 422) {
+      return 'Dados inválidos. Verifique email e senha.';
+    }
+
+    return 'Não foi possível fazer login.';
   }
 }

@@ -1,7 +1,7 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { ConsumoResponse, ConsumoService } from '../../service/consumo.service';
+import { ConsumoResponse, ConsumoService } from '../../services/consumo.service';
 
 interface CategoriaGrafico {
   label: string;
@@ -70,6 +70,10 @@ export class TelaGraficosComponent implements OnInit {
 
   irParaGraficos(): void {
     this.router.navigate(['/graficos']);
+  }
+
+  irParaSimulacao(): void {
+    this.router.navigate(['/simulacao']);
   }
 
   selecionarAba(aba: 'consumo' | 'simulacao'): void {

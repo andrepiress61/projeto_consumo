@@ -6,7 +6,7 @@ import {
   ConsumoRequest,
   ConsumoResponse,
   ConsumoService
-} from '../../service/consumo.service';
+} from '../../services/consumo.service';
 
 interface RegistroView {
   id: number;
@@ -88,6 +88,10 @@ export class TelaConsumoComponent implements OnInit {
 
   irParaGraficos(): void {
     this.router.navigate(['/graficos']);
+  }
+
+  irParaSimulacao(): void {
+    this.router.navigate(['/simulacao']);
   }
 
   selecionarTipo(tipo: string): void {

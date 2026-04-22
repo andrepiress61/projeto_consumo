@@ -3,10 +3,10 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { AuthService } from '../../core/auth.service';
-import { UsuarioService, UsuarioMeResponse } from '../../service/usuarioservice';
-import { MetaService, MetaResponse } from '../../service/meta.service';
-import { ConsumoService, ConsumoResponse } from '../../service/consumo.service';
+import { MetaService, MetaResponse } from '../../services/meta.service';
+import { ConsumoService, ConsumoResponse } from '../../services/consumo.service';
+import { AuthService, UsuarioLocal } from '../../core/auth.service';
+import { UsuarioService, UsuarioMeResponse } from '../../services/usuarioservice';
 
 interface MetaView {
   id: number | string;
@@ -65,7 +65,12 @@ export class TelaMenuComponent implements OnInit {
     this.usuarioService.buscarUsuarioLogado().subscribe({
       next: (usuario) => {
         this.aplicarUsuario(usuario);
-        this.authService.atualizarUsuarioLocal(usuario);
+        this.authService.atualizarUsuarioLocal({
+          id: usuario?.id,
+          nome: usuario?.nome,
+          email: usuario?.email,
+          cidade: usuario?.cidade
+        });
       },
       error: () => {
         const usuarioLocal = this.authService.getUsuarioLocal();
@@ -117,7 +122,7 @@ export class TelaMenuComponent implements OnInit {
     });
   }
 
-  aplicarUsuario(usuario: UsuarioMeResponse): void {
+  aplicarUsuario(usuario: UsuarioMeResponse | UsuarioLocal): void {
     this.usuarioNome = String(usuario?.nome || 'Usuário');
     this.usuarioEmail = String(usuario?.email || '');
     this.usuarioCidade = String(usuario?.cidade || '');
@@ -216,13 +221,16 @@ export class TelaMenuComponent implements OnInit {
     this.router.navigate(['/perfil']);
   }
 
-  irParaConsumo(): void {
-    this.router.navigate(['/consumo']);
-
+  irParaConsumo():void {
+    this.router.navigate(['/consumo'])
   }
 
   irParaGraficos(): void {
-  this.router.navigate(['/graficos']);
+    this.router.navigate(['/graficos']);
+  }
+
+  irParaSimulacao(): void {
+    this.router.navigate(['/simulacao']);
   }
 
   voltarParaLogin(): void {
